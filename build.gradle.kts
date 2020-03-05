@@ -7,6 +7,8 @@ version = "1.0-SNAPSHOT"
 plugins {
     java
     kotlin("jvm") version "1.3.31"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "9.2.1"
+//    id("io.gitlab.arturbosch.detekt") version "1.6.0"
 }
 
 repositories {
@@ -18,14 +20,22 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 }
 
-tasks.test {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
+//detekt {
+//    input = files("src/main/kotlin")
+//    config = files("ci/detekt.yml")
+//    // 設定ファイルはデフォルトの差分だけを記述する
+//    buildUponDefaultConfig = true
+//}
 
-// config JVM target to 1.8 for kotlin compilation tasks
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "1.8"
+tasks {
+    test {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    withType<KotlinCompile>().configureEach {
+        kotlinOptions.jvmTarget = "1.8"
+    }
 }
